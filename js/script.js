@@ -16,9 +16,10 @@ function showPage(array, page) {
       const showData = array[i];
 
       const liContainer = document.createElement("li");
+      liContainer.classList.add("student-item", "cf");
 
       const studentDetails = document.createElement("div");
-      studentDetails.classList.add("student-item", "cf");
+      studentDetails.classList.add("student-details");
 
       const imgEl = document.createElement("img");
       imgEl.classList.add("avatar");
