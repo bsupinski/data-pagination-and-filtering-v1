@@ -17,6 +17,7 @@ Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
 function showPage(array, page) {
+  studentListContainer.innerHTML = ``;
   const start = page * itemsPerPage - itemsPerPage;
   const end = page * itemsPerPage - 1;
   for (let i = 0; i < array.length; i++) {
@@ -61,6 +62,7 @@ Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 function addPagination(array) {
+  paginationContainer.innerHTML = ``;
   const buttonsNeeded = Math.ceil(array.length / itemsPerPage);
   for (let i = 0; i < buttonsNeeded; i++) {
     const listEl = document.createElement("li");
@@ -111,6 +113,28 @@ inputButton.append(buttonImg);
 label.append(inputName, input, inputButton);
 
 header.appendChild(label);
+
+// Filter classlist with input
+
+const inputBar = document.querySelector("input");
+inputBar.addEventListener("keyup", () => {
+  const filteredData = [];
+  const userInput = inputBar.value.toLowerCase();
+
+  for (let i = 0; i < data.length; i++) {
+    const student = data[i];
+    const studentName =
+      `${student.name.title}. ${student.name.first} ${student.name.last}`.toLowerCase();
+    if (studentName.includes(userInput)) {
+      filteredData.push(student);
+    }
+
+    if (filteredData.length > 0) {
+      addPagination(filteredData);
+      showPage(filteredData, 1);
+    }
+  }
+});
 
 // Call functions
 addPagination(data);
