@@ -6,16 +6,7 @@ const paginationContainer = document.querySelector(".js-page-container");
 const studentListContainer = document.querySelector(".student-list");
 const itemsPerPage = 9;
 
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
-
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
+// Displays students into the container
 function showPage(array, page) {
   studentListContainer.innerHTML = ``;
   const start = page * itemsPerPage - itemsPerPage;
@@ -57,10 +48,7 @@ function showPage(array, page) {
   }
 }
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+// Added number of buttons
 function addPagination(array) {
   paginationContainer.innerHTML = ``;
   const buttonsNeeded = Math.ceil(array.length / itemsPerPage);
@@ -73,20 +61,20 @@ function addPagination(array) {
     paginationContainer.appendChild(listEl);
   }
 
-  const firstButton = document.querySelector("button");
+  const firstButton = paginationContainer.querySelector("button");
   firstButton.classList.add("active");
+  //   Adds event listener to change displayed page
+  paginationContainer.addEventListener("click", (e) => {
+    closestButton = e.target.closest("button");
+    if (closestButton) {
+      const currentActiveButton = document.querySelector(".active");
+      currentActiveButton.classList.remove("active");
+      closestButton.classList.add("active");
+      studentListContainer.innerHTML = ``;
+      showPage(array, closestButton.innerHTML);
+    }
+  });
 }
-
-paginationContainer.addEventListener("click", (e) => {
-  closestButton = e.target.closest("button");
-  if (closestButton) {
-    const currentActiveButton = document.querySelector(".active");
-    currentActiveButton.classList.remove("active");
-    closestButton.classList.add("active");
-    studentListContainer.innerHTML = ``;
-    showPage(data, closestButton.innerHTML);
-  }
-});
 
 //Add searchbar
 const header = document.querySelector("header");
@@ -114,8 +102,7 @@ label.append(inputName, input, inputButton);
 
 header.appendChild(label);
 
-// Filter classlist with input
-
+// Filter classlist with user input
 const inputBar = document.querySelector("input");
 inputBar.addEventListener("keyup", () => {
   const filteredData = [];
@@ -132,6 +119,9 @@ inputBar.addEventListener("keyup", () => {
     if (filteredData.length > 0) {
       addPagination(filteredData);
       showPage(filteredData, 1);
+    } else {
+      studentListContainer.innerText = `No results found`;
+      paginationContainer.innerHTML = "";
     }
   }
 });
